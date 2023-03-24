@@ -22,7 +22,7 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             _csvReader = csvReader;
-            driver.Manage().Window.Maximize();
+           
             driver.Navigate().GoToUrl("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/formResponse");
         }
         public void SendSurvey()
