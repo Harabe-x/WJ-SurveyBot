@@ -1,6 +1,8 @@
 ﻿using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System.Collections.ObjectModel;
+using WJ_SurverBot.Survey.CsvReader;
+using System.Formats.Asn1;
 
 namespace WJ_SurverBot.Survey.ScenarioStrategy
 {
@@ -9,27 +11,30 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
         private readonly ChromeDriver driver = new ChromeDriver();
 
 
-        public FirstSurveyPattern()
+        private readonly ICsvReader _csvReader;
+
+        public FirstSurveyPattern(ICsvReader csvReader)
         {
-            driver.Manage().Window.Maximize();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            _csvReader = csvReader;
             driver.Navigate().GoToUrl("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/formResponse");
         }
         public void SendSurvey()
         {
-          //  FillFirstPartOfForm();
-            Tested1();
-            //IWebElement submitButton = driver.FindElement(By.CssSelector("div[role='button']"));
-            //submitButton.Click();
+            FillFirstPartOfForm();
+            FillSecondPartOfForm();
 
         }
 
         private void FillFirstPartOfForm()
         {
-            int currentIndex = 0;
-           
             ReadOnlyCollection<IWebElement> webElements = driver.FindElements(By.TagName("div"));
-
             Dictionary<string, IWebElement> surveyElemnts = new();
+            IWebElement nextButton = null;
+            int currentIndex = 0;
+            
+           
             foreach (var webElement in webElements)
             {
                 Console.Title = $"Analyzing Elements [{currentIndex}/{webElements.Count}]";
@@ -40,20 +45,26 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
                         webElement.Text == "Male" ||
                         webElement.Text == "Yes (go to question 5)" ||
                         webElement.Text == "Falcons" ||
-                        webElement.Text == "Yes" ||
+                        webElement.Text == "No" ||
                         webElement.Text == "No (go to question 9)" ||
-                        webElement.Text == "Lack of knowledge" ||
+                        webElement.Text == "I'm not a sports person" ||
                         webElement.Text == "No (go to question 12)" ||
-                        webElement.Text == "Top 10")
+                        webElement.Text == "Top 30")
                     {
                         surveyElemnts.Add(webElement.Text, webElement);
+                    }
+                    if (webElement.Text == "Dalej")
+                    {
+                        nextButton = webElement;
                     }
 
                 }
                 catch (ArgumentException e)
                 {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     currentIndex++;
-                    Console.WriteLine("Throw");
+                    Console.WriteLine($"Duplicated {webElement.ToString()}");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                 }
                 currentIndex++;
                 Console.Title = $"Analyzing Elements [{currentIndex}/{webElements.Count}]";
@@ -63,27 +74,30 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
             {
                 item.Value.Click();
             }
+            
+            IList<IWebElement> textareas = driver.FindElements(By.CssSelector("textarea"));
+            textareas[0].Click();
+            textareas[0].SendKeys(_csvReader.GetCityList("Resources\\worldcities.csv", 1)[0]);
+            nextButton.Click();
+
         }
-        private void Tested1()
+        private void FillSecondPartOfForm()
         {
-
-
-            IWebElement el = driver.FindElement(By.XPath("//*[contains(concat( \" \", @class, \" \" ), concat( \" \", \"tL9Q4c\", \" \" ))]"));
-            for (int i = 0; i < 3; i++)
+            ReadOnlyCollection<IWebElement> webElements = driver.FindElements(By.TagName("div"));
+            foreach (var webElement in webElements)
             {
-                el.Click();
-                el.SendKeys("All Girls Are The Same");
+               if (webElement.Text == "Prześlij")
+                {
+                    webElement.Click();
+                    driver.Close();
+                    return;   
+                }
             }
-                //Console.ReadKey();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    foreach (var item in driver.FindElements(By.TagName("div")))
-            //    {
-            //        Console.WriteLine($"===================\nTagName:{item.TagName}\nLocation:{item.Location}\nText:{item.Text}\nitem To string: {item.ToString()}");
-            //    }
-            //    Console.ReadKey();
-            //}
         }
+
+
+
+
     }
     
 }
