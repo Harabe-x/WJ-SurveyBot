@@ -1,34 +1,30 @@
-﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WJ_SurverBot.Survey.CsvReader;
-using WJ_SurverBot.Survey.Model;
 
 namespace WJ_SurverBot.Survey.ScenarioStrategy
 {
-    internal class FourthSurveyStrategy : IScenarioStrategy
+    internal class FourthSurveyPattern 
     {
         private readonly ChromeDriver driver = new ChromeDriver();
 
 
         private readonly ICsvReader _csvReader;
 
-        public FourthSurveyStrategy(ICsvReader csvReader)
+        public FourthSurveyPattern(ICsvReader csvReader)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             _csvReader = csvReader;
-            driver.Navigate().GoToUrl("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/formResponse");
+            driver.Navigate().GoToUrl("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w");
         }
         public void SendSurvey()
         {
             FillFirstPartOfForm();
+                    
+            Thread.Sleep(10000);
             FillSecondPartOfForm();
-
+            
         }
 
         private void FillFirstPartOfForm()
@@ -78,6 +74,7 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
             foreach (var item in surveyElemnts)
             {
                 item.Value.Click();
+                Thread.Sleep(1000);
             }
 
             IList<IWebElement> textareas = driver.FindElements(By.CssSelector("textarea"));

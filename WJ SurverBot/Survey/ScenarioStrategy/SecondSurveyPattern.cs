@@ -1,28 +1,22 @@
-﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WJ_SurverBot.Survey.CsvReader;
-using WJ_SurverBot.Survey.Model;
 
 namespace WJ_SurverBot.Survey.ScenarioStrategy
 {
-    internal class SecondSurveyScnario : IScenarioStrategy
+    internal class SecondSurveyPattern 
     {
         private readonly ChromeDriver driver = new ChromeDriver();
 
 
         private readonly ICsvReader _csvReader;
 
-        public SecondSurveyScnario(ICsvReader csvReader)
+        public SecondSurveyPattern(ICsvReader csvReader)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             _csvReader = csvReader;
-            driver.Navigate().GoToUrl("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/formResponse");
+            driver.Navigate().GoToUrl("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w");
         }
         public void SendSurvey()
         {
@@ -47,7 +41,7 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
 
                     if (webElement.Text == "17-30" ||
                         webElement.Text == "Female" ||
-                        webElement.Text == "Yes (go to question 5)" ||    
+                        webElement.Text == "Yes (go to question 5)" ||
                         webElement.Text == "Kavallieri" ||
                         webElement.Text == "Wolves" ||
                         webElement.Text == "No" ||
