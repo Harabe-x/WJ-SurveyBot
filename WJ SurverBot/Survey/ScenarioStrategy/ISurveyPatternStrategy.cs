@@ -2,6 +2,12 @@
 {
     internal interface ISurveyPatternStrategy
     {
-        void SendSurvey(string[] options);
+        string[] GetSurveyAnswers();
+
+        string[] GetSurveyTextAnswers();
+
+
+
+
     }
 }

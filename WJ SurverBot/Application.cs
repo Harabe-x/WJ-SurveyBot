@@ -18,13 +18,20 @@ namespace WJ_SurverBot
 
         public Application(ISurveySender surveySender, ICsvReader csvReader , IChromeDrivePlayground chromeDrivePlayground)
         {
-            _surveySender = surveySender;
-            _csvReader = csvReader;
-            _chromeDrivePlayground = chromeDrivePlayground;
+           _surveySender = surveySender;
+           _csvReader = csvReader;
+           _chromeDrivePlayground = chromeDrivePlayground;
         }
         public void Run()
         {
-            _chromeDrivePlayground.StartChromeDrive("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/viewform");
+
+            ISurveyPatternStrategy surveypattern = new ThridSurveyPatern();
+
+
+            _surveySender.SendAnswer("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/viewform"
+                , surveypattern.GetSurveyAnswers(), surveypattern.GetSurveyTextAnswers()); 
+
+
         }
     }
 }

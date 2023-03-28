@@ -7,10 +7,14 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
 {
     internal class FirstSurveyPattern : ISurveyPatternStrategy
     {
-        public void SendSurvey(string[] options)
+        public string[] GetSurveyAnswers()
         {
-            throw new NotImplementedException();
+            return new string[] { };
         }
+        public string[] GetSurveyTextAnswers()
+        {
+            return new string[] { };
+        } 
     }
 
 }

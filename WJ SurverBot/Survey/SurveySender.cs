@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V108.Debugger;
 using System.Collections.ObjectModel;
 using WJ_SurverBot.Survey.CsvReader;
 using WJ_SurverBot.Survey.ScenarioStrategy;
@@ -8,30 +9,50 @@ namespace WJ_SurverBot.Survey
 {
     internal class SurveySender : ISurveySender
     {
-        private readonly ChromeDriver driver = new ChromeDriver();
+
+        private readonly ChromeDriver driver;
 
 
-        private readonly ICsvReader _csvReader;
+        int currentIndex = 0;
 
-        public SurveySender(ICsvReader csvReader = null)
+        public SurveySender()
         {
+           driver = new ChromeDriver();
+            
+            
             Console.ForegroundColor = ConsoleColor.Cyan;
-
-            _csvReader = csvReader;
         }
 
 
         public void SendAnswer(string formUrl, string[] FormAnswer, string[] textFieldsAnswer)
         {
             driver.Navigate().GoToUrl(formUrl);
+
+
             ReadOnlyCollection<IWebElement> webElements = driver.FindElements(By.TagName("div"));
+
+
+            IWebElement? webButton = null;
+            
+
             Dictionary<string, IWebElement> surveyElemnts = new();
-            IWebElement nextButton = null;
-            int currentIndex = 0;
-
-
+            
+            
             foreach (var webElement in webElements)
             {
+
+                if (webElement.Text == null)
+                {
+                    currentIndex++;
+
+                    continue;
+                }
+
+                if (surveyElemnts.Count ==  FormAnswer.Length && webButton != null )
+                {
+                    break;
+                }
+
                 Console.Title = $"Analyzing Elements [{currentIndex}/{webElements.Count}]";
                 try
                 {
@@ -41,12 +62,21 @@ namespace WJ_SurverBot.Survey
                         if (answer == webElement.Text )
                         {
                             surveyElemnts.Add(webElement.Text, webElement);
-                        }                        
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.WriteLine($"Added {webElement.ToString()} ");
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+
+                        }
                     }
 
                     if (webElement.Text == "Dalej" || webElement.Text == "Prześlij")
                     {
-                        
+                        webButton = webElement;
+
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.WriteLine($"Added {webElement.ToString()} ");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+
                     }
                   
                 }
@@ -58,7 +88,7 @@ namespace WJ_SurverBot.Survey
                     Console.ForegroundColor = ConsoleColor.Cyan;
                 }
                 currentIndex++;
-                Console.Title = $"Analyzing Elements [{currentIndex}/{webElements.Count}]";
+
             }
 
             foreach (var item in surveyElemnts)
@@ -67,9 +97,19 @@ namespace WJ_SurverBot.Survey
             }
 
             IList<IWebElement> textareas = driver.FindElements(By.CssSelector("textarea"));
-            textareas[0].Click();
-            textareas[0].SendKeys(_csvReader.GetCityList("Resources\\worldcities.csv", 1)[0]);
-            nextButton.Click();
+
+
+
+            for (int i = 0; i < textareas.Count; i++)
+            {
+                textareas[i].Click();
+                textareas[i].SendKeys(textFieldsAnswer[i]);
+            }
+
+            
+            
+
+            webButton.Click();
         }
     }
 
