@@ -5,7 +5,7 @@ using WJ_SurverBot.Survey.CsvReader;
 
 namespace WJ_SurverBot.Survey.ScenarioStrategy
 {
-    internal class FirstSurveyPattern : ISurveyPatternStrategy
+    internal class FourthSurveyPattern : ISurveyPatternStrategy
     {
         public string[] GetSurveyAnswers()
         {
@@ -14,7 +14,6 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
         public string[] GetSurveyTextAnswers()
         {
             return new string[] { };
-        } 
+        }
     }
-
 }

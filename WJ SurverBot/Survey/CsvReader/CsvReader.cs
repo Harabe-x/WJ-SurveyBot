@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WJ_SurverBot.Survey.Extension;
-using WJ_SurverBot.Survey.Model;
+﻿using WJ_SurverBot.Survey.Extension;
 
 namespace WJ_SurverBot.Survey.CsvReader
 {
@@ -19,14 +13,14 @@ namespace WJ_SurverBot.Survey.CsvReader
             return RemoveQuote(CityList);
         }
 
-       
 
-         List<string>  RemoveQuote(List<string> list)
+
+        List<string> RemoveQuote(List<string> list)
         {
             List<string> result = new List<string>();
             foreach (var item in list)
             {
-                string city="";
+                string city = "";
 
                 for (int i = 0; i < item.Length; i++)
                 {
@@ -40,6 +34,6 @@ namespace WJ_SurverBot.Survey.CsvReader
             return result;
         }
 
-        
+
     }
 }
