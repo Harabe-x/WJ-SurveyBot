@@ -1,7 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Collections.ObjectModel;
-using WJ_SurverBot.Survey.CsvReader;
 
 namespace WJ_SurverBot.Survey.ScenarioStrategy
 {
@@ -9,7 +8,7 @@ namespace WJ_SurverBot.Survey.ScenarioStrategy
     {
         public string[] GetSurveyAnswers()
         {
-            return new string[] { };
+            return new string[] { "Tak" };
         }
         public string[] GetSurveyTextAnswers()
         {

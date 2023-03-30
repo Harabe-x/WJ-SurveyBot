@@ -1,8 +1,6 @@
-﻿using Figgle;
+﻿using WJ_SurverBot.Survey.ScenarioStrategy;
 using WJ_SurverBot.Survey;
-using WJ_SurverBot.Survey.CsvReader;
-using WJ_SurverBot.Survey.Playground;
-using WJ_SurverBot.Survey.ScenarioStrategy;
+using Figgle;
 
 namespace WJ_SurverBot
 {
@@ -10,28 +8,33 @@ namespace WJ_SurverBot
     {
 
 
-        private readonly ICsvReader _csvReader;
 
         private readonly ISurveySender _surveySender;
 
-        private readonly IChromeDrivePlayground _chromeDrivePlayground;
 
-        public Application(ISurveySender surveySender, ICsvReader csvReader , IChromeDrivePlayground chromeDrivePlayground)
+        public Application(ISurveySender surveySender)
         {
            _surveySender = surveySender;
-           _csvReader = csvReader;
-           _chromeDrivePlayground = chromeDrivePlayground;
         }
         public void Run()
         {
 
-            ISurveyPatternStrategy surveypattern = new ThridSurveyPatern();
+            ISurveyPatternStrategy surveypattern = new FirstSurveyPattern();
+            ISurveyPatternStrategy _surveypattern2 = new SecondSurveyPattern();
+
+            ISurveyPatternStrategy surveypattern4 = new FourthSurveyPattern();
+
+         //   _surveySender.SendAnswer("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/viewform"
+           //     , surveypattern.GetSurveyAnswers(), surveypattern.GetSurveyTextAnswers());
+
+            for (int i = 0; i < 250; i++)
+            {
+                _surveySender.SendAnswer("https://docs.google.com/forms/d/1up6fqbpZacKOFf-YCix7jW5xp5BBbQ5p0Bilf9AETQM"
+                , surveypattern.GetSurveyAnswers(), surveypattern.GetSurveyTextAnswers());
 
 
-            _surveySender.SendAnswer("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/viewform"
-                , surveypattern.GetSurveyAnswers(), surveypattern.GetSurveyTextAnswers()); 
 
-
+            }
         }
     }
 }

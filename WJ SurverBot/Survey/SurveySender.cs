@@ -1,119 +1,104 @@
-﻿using OpenQA.Selenium;
+﻿using WJ_SurverBot.Survey.VisualEffects;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.DevTools.V108.Debugger;
-using System.Collections.ObjectModel;
-using WJ_SurverBot.Survey.CsvReader;
-using WJ_SurverBot.Survey.ScenarioStrategy;
+using WJ_SurverBot.Survey;
+using OpenQA.Selenium;
 
-namespace WJ_SurverBot.Survey
+
+namespace WJ_SurveyBot.Survey
 {
-    internal class SurveySender : ISurveySender
+    internal class SurveySender : ISurveySender , IDisposable
     {
-
         private readonly ChromeDriver driver;
-
-
-        int currentIndex = 0;
+        private readonly AnimatedConsoleTitle titleAnimation;
 
         public SurveySender()
         {
-           driver = new ChromeDriver();
-            
-            
+            driver = new ChromeDriver();
+            titleAnimation = new AnimatedConsoleTitle();
             Console.ForegroundColor = ConsoleColor.Cyan;
         }
 
-
-        public void SendAnswer(string formUrl, string[] FormAnswer, string[] textFieldsAnswer)
+        public void SendAnswer(string formUrl, string[] formAnswer, string[] textFieldsAnswer)
         {
             driver.Navigate().GoToUrl(formUrl);
-
-
-            ReadOnlyCollection<IWebElement> webElements = driver.FindElements(By.TagName("div"));
-
-
-            IWebElement? webButton = null;
             
+            var webElements = driver.FindElements(By.TagName("div"));
+            var surveyElements = new Dictionary<string, IWebElement>();
+            IWebElement webButton = null;
 
-            Dictionary<string, IWebElement> surveyElemnts = new();
+            titleAnimation.AddFrames(new[] {
+                "Processing Elements [>----]",
+                "Processing Elements [->---]",
+                "Processing Elements [-->--]",
+                "Processing Elements [--->-]",
+                "Processing Elements [---->]"
+            });
             
-            
+            titleAnimation.StartAnimation();
+
             foreach (var webElement in webElements)
             {
-
-                if (webElement.Text == null)
+                if (string.IsNullOrEmpty(webElement.Text))
                 {
-                    currentIndex++;
-
                     continue;
                 }
 
-                if (surveyElemnts.Count ==  FormAnswer.Length && webButton != null )
+                if (formAnswer.Contains(webElement.Text))
                 {
-                    break;
-                }
-
-                Console.Title = $"Analyzing Elements [{currentIndex}/{webElements.Count}]";
-                try
-                {
-
-                    foreach (var answer in FormAnswer)
+                    try
                     {
-                        if (answer == webElement.Text )
-                        {
-                            surveyElemnts.Add(webElement.Text, webElement);
-                            Console.ForegroundColor = ConsoleColor.DarkGreen;
-                            Console.WriteLine($"Added {webElement.ToString()} ");
-                            Console.ForegroundColor = ConsoleColor.Cyan;
-
-                        }
-                    }
-
-                    if (webElement.Text == "Dalej" || webElement.Text == "Prześlij")
-                    {
-                        webButton = webElement;
-
+                        surveyElements.Add(webElement.Text, webElement);
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.WriteLine($"Added {webElement.ToString()} ");
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-
+                        Console.WriteLine($"Added {webElement} ");
                     }
-                  
+                    catch (ArgumentException)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.WriteLine($"Duplicated {webElement}");
+                    }
+                    finally
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                    }
                 }
-                catch (ArgumentException e)
+                else if (webElement.Text == "Dalej" || webElement.Text == "Prześlij")
                 {
-                    currentIndex++;
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Duplicated {webElement.ToString()}");
+                    webButton = webElement;
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
+                    Console.WriteLine($"Button found {webElement} ");
                     Console.ForegroundColor = ConsoleColor.Cyan;
                 }
-                currentIndex++;
-
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Skipped {webElement} ");
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                }
             }
 
-            foreach (var item in surveyElemnts)
+            titleAnimation.StopAnimation();
+
+            Console.Title = "WJ Survey Bot v1.1.0";
+
+            foreach (var item in surveyElements)
             {
                 item.Value.Click();
             }
 
-            IList<IWebElement> textareas = driver.FindElements(By.CssSelector("textarea"));
-
-
-
-            for (int i = 0; i < textareas.Count; i++)
+            var textAreas = driver.FindElements(By.CssSelector("textarea"));
+            for (int i = 0; i < textAreas.Count; i++)
             {
-                textareas[i].Click();
-                textareas[i].SendKeys(textFieldsAnswer[i]);
+                textAreas[i].Click();
+                textAreas[i].SendKeys(textFieldsAnswer[i]);
             }
 
+            webButton?.Click();
             
-            
-
-            webButton.Click();
         }
+        public void Dispose()
+        {
+            driver.Dispose();
+        }
+
     }
-
-
-
 }
-
