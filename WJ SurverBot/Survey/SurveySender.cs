@@ -2,102 +2,42 @@
 using OpenQA.Selenium.Chrome;
 using WJ_SurverBot.Survey;
 using OpenQA.Selenium;
-
+using System.Net.Http;
 
 namespace WJ_SurveyBot.Survey
 {
     internal class SurveySender : ISurveySender , IDisposable
     {
-        private readonly ChromeDriver driver;
-        private readonly AnimatedConsoleTitle titleAnimation;
+
+
+        private HttpClient _httpClient;
 
         public SurveySender()
         {
-            driver = new ChromeDriver();
-            titleAnimation = new AnimatedConsoleTitle();
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            _httpClient = new HttpClient();
         }
-
-        public void SendAnswer(string formUrl, string[] formAnswer, string[] textFieldsAnswer)
+      
+        public async Task SendAnswer(string requestUrl, Dictionary<string, string> httpRequestBody)
         {
-            driver.Navigate().GoToUrl(formUrl);
             
-            var webElements = driver.FindElements(By.TagName("div"));
-            var surveyElements = new Dictionary<string, IWebElement>();
-            IWebElement webButton = null;
 
-            titleAnimation.AddFrames(new[] {
-                "Processing Elements [>----]",
-                "Processing Elements [->---]",
-                "Processing Elements [-->--]",
-                "Processing Elements [--->-]",
-                "Processing Elements [---->]"
-            });
-            
-            titleAnimation.StartAnimation();
 
-            foreach (var webElement in webElements)
+            var content = new FormUrlEncodedContent(httpRequestBody);
+
+            var response = await _httpClient.PostAsync(requestUrl, content);
+
+            if (response.IsSuccessStatusCode)
             {
-                if (string.IsNullOrEmpty(webElement.Text))
-                {
-                    continue;
-                }
-
-                if (formAnswer.Contains(webElement.Text))
-                {
-                    try
-                    {
-                        surveyElements.Add(webElement.Text, webElement);
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.WriteLine($"Added {webElement} ");
-                    }
-                    catch (ArgumentException)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.WriteLine($"Duplicated {webElement}");
-                    }
-                    finally
-                    {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                    }
-                }
-                else if (webElement.Text == "Dalej" || webElement.Text == "Prześlij")
-                {
-                    webButton = webElement;
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine($"Button found {webElement} ");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                }
-                else
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Skipped {webElement} ");
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                }
+                Console.WriteLine($"------------------------\nRequest sent! \nTime:{DateTime.Now.ToString("hh:mm:ss")}");
             }
-
-            titleAnimation.StopAnimation();
-
-            Console.Title = "WJ Survey Bot v1.1.0";
-
-            foreach (var item in surveyElements)
+            else
             {
-                item.Value.Click();
+                Console.WriteLine($"Error. Error Code: {response.StatusCode} \n Response Content:{response.Content}");
             }
-
-            var textAreas = driver.FindElements(By.CssSelector("textarea"));
-            for (int i = 0; i < textAreas.Count; i++)
-            {
-                textAreas[i].Click();
-                textAreas[i].SendKeys(textFieldsAnswer[i]);
-            }
-
-            webButton?.Click();
-            
         }
         public void Dispose()
         {
-            driver.Dispose();
+            _httpClient.Dispose();
         }
 
     }

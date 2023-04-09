@@ -19,22 +19,10 @@ namespace WJ_SurverBot
         public void Run()
         {
 
-            ISurveyPatternStrategy surveypattern = new FirstSurveyPattern();
-            ISurveyPatternStrategy _surveypattern2 = new SecondSurveyPattern();
-
-            ISurveyPatternStrategy surveypattern4 = new FourthSurveyPattern();
-
-         //   _surveySender.SendAnswer("https://docs.google.com/forms/d/e/1FAIpQLScJIv8gUfdGTAzk-15MY93sMag6jdXTpLP5lTvDdm1fgSrP0w/viewform"
-           //     , surveypattern.GetSurveyAnswers(), surveypattern.GetSurveyTextAnswers());
-
-            for (int i = 0; i < 250; i++)
-            {
-                _surveySender.SendAnswer("https://docs.google.com/forms/d/1up6fqbpZacKOFf-YCix7jW5xp5BBbQ5p0Bilf9AETQM"
-                , surveypattern.GetSurveyAnswers(), surveypattern.GetSurveyTextAnswers());
 
 
 
-            }
+            
         }
     }
 }
