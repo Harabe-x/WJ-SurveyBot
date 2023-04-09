@@ -6,25 +6,27 @@ using System.Collections.Generic;
 using System.Linq;
 using WJ_SurverBot.Survey;
 using WJ_SurverBot.Survey.VisualEffects;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WJ_SurveyBot.Survey
 {
     internal class SurveySender : ISurveySender , IDisposable
     {
-        private readonly ChromeDriver driver;
         private readonly AnimatedConsoleTitle titleAnimation;
 
         public SurveySender()
         {
-            driver = new ChromeDriver();
             titleAnimation = new AnimatedConsoleTitle();
             Console.ForegroundColor = ConsoleColor.Cyan;
         }
 
         public void SendAnswer(string formUrl, string[] formAnswer, string[] textFieldsAnswer)
         {
+            ChromeDriver driver = new ChromeDriver();
+            //driver.Manage().Window.Minimize();
+        //    driver.Manage().Window.Minimize();
             driver.Navigate().GoToUrl(formUrl);
-            
+           
             var webElements = driver.FindElements(By.TagName("div"));
             var surveyElements = new Dictionary<string, IWebElement>();
             IWebElement webButton = null;
@@ -64,7 +66,7 @@ namespace WJ_SurveyBot.Survey
                         Console.ForegroundColor = ConsoleColor.Cyan;
                     }
                 }
-                else if (webElement.Text == "Dalej" || webElement.Text == "Prześlij")
+                else   if (webElement.Text == "Dalej" || webElement.Text == "Prześlij")
                 {
                     webButton = webElement;
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -87,21 +89,27 @@ namespace WJ_SurveyBot.Survey
             {
                 item.Value.Click();
             }
+            IList<IWebElement> textareas = driver.FindElements(By.CssSelector("textarea"));
 
-            var textAreas = driver.FindElements(By.CssSelector("textarea"));
-            for (int i = 0; i < textAreas.Count; i++)
+
+            for (int i = 0; i < textareas.Count; i++)
             {
-                textAreas[i].Click();
-                textAreas[i].SendKeys(textFieldsAnswer[i]);
+                textareas[i].Click();
+                textareas[i].SendKeys(textFieldsAnswer[i]);
             }
+                webButton?.Click();
 
-            webButton?.Click();
-            Dispose();
+
+           driver.Dispose();
+
         }
+
+
         public void Dispose()
         {
-            driver.Dispose();
+
         }
 
     }
 }
+
