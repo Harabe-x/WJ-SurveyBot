@@ -1,6 +1,7 @@
 ﻿using WJ_SurverBot.Survey.ScenarioStrategy;
 using WJ_SurverBot.Survey;
 using Figgle;
+using WJ_SurverBot.Fiddler_Core;
 
 namespace WJ_SurverBot
 {
@@ -12,17 +13,21 @@ namespace WJ_SurverBot
         private readonly ISurveySender _surveySender;
 
 
-        public Application(ISurveySender surveySender)
+        private readonly IRequestCapture _requestCapture; 
+
+        public Application(ISurveySender surveySender, IRequestCapture requestCapture)
         {
            _surveySender = surveySender;
+            _requestCapture = requestCapture;  
         }
         public void Run()
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            _requestCapture.Start();
 
 
 
-
-            
+            Console.ReadLine();
         }
     }
 }

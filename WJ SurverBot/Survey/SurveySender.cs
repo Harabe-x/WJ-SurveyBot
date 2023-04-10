@@ -37,7 +37,7 @@ namespace WJ_SurveyBot.Survey
         }
         public void Dispose()
         {
-            _httpClient.Dispose();
+            _httpClient.Dispose(); 
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using WJ_SurverBot.Fiddler_Core;
 using WJ_SurverBot.Survey;
 using WJ_SurveyBot.Survey;
 
@@ -13,6 +14,7 @@ class Program
         var services = new ServiceCollection();
         services.AddSingleton<IApplication, Application>();
         services.AddSingleton<ISurveySender, SurveySender>();
+        services.AddSingleton<IRequestCapture, RequestCapture>();
         var servicesProvider = services.BuildServiceProvider();
         var app = servicesProvider.GetService<IApplication>();
         app.Run();
