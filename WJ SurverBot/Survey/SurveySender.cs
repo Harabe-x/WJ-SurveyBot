@@ -18,10 +18,7 @@ namespace WJ_SurveyBot.Survey
         }
       
         public async Task SendAnswer(string requestUrl, Dictionary<string, string> httpRequestBody)
-        {
-            
-
-
+        {           
             var content = new FormUrlEncodedContent(httpRequestBody);
 
             var response = await _httpClient.PostAsync(requestUrl, content);

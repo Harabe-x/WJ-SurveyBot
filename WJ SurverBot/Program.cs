@@ -14,7 +14,7 @@ class Program
         var services = new ServiceCollection();
         services.AddSingleton<IApplication, Application>();
         services.AddSingleton<ISurveySender, SurveySender>();
-        services.AddSingleton<IRequestCapture, RequestCapture>();
+        services.AddSingleton<IHttpRequestCapture, HttpRequestCapture>();
         var servicesProvider = services.BuildServiceProvider();
         var app = servicesProvider.GetService<IApplication>();
         app.Run();

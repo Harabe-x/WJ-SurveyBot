@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace WJ_SurverBot.Fiddler_Core
 {
-    internal interface IRequestCapture
+    internal interface IHttpRequestCapture
     {
-
         public void Start();
         public void Stop();
         public Session FindRequest(string url);
         public List<Session> ReturnAllRequests();
+
+        public bool InstallCertificate();
 
 
     }
