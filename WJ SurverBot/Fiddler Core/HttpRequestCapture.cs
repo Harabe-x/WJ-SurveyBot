@@ -17,13 +17,14 @@ namespace WJ_SurverBot.Fiddler_Core
         public bool SaveRequestsToFile { get;  set; }
 
 
-
         private readonly List<Session> capturedSessions;
 
         public HttpRequestCapture()
         {
             capturedSessions = new List<Session>();
         }
+
+
 
         public Session FindRequest(string url)
         {
@@ -52,6 +53,13 @@ namespace WJ_SurverBot.Fiddler_Core
 
         public void Start()
         {
+            Thread thread = new(StartCaptureInSepartedThread);
+            thread.Start();
+        }
+
+
+        private void StartCaptureInSepartedThread()
+        {
             if (IsCaptureEnabled)
             {
                 return;
@@ -65,12 +73,13 @@ namespace WJ_SurverBot.Fiddler_Core
                 .RegisterAsSystemProxy()
                 .DecryptSSL()
                 .Build();
-                // .RegisterAsSystemProxy() 
+
 
             FiddlerApplication.Startup(settings);
             IsCaptureEnabled = true;
             Console.ReadLine();
         }
+
 
         public void Stop()
         {
@@ -80,24 +89,7 @@ namespace WJ_SurverBot.Fiddler_Core
 
         private void OnRequest(Session session)
         {
-            SaveRequestsToFile = true; 
-            capturedSessions.Add(session);
-            if (SaveRequestsToFile)
-            {
-                try
-                {
-                    using (Stream outputStream = File.Create($"C:\\Users\\xgra5\\Music\\HttpRequests\\Http_Request{DateTime.Now.ToString("hh-mm-ss")}.txt"))
-                    {
-                        session.WriteToStream(outputStream, false);
-                    }
-                }
-                catch (Exception)
-                {
-
-             
-                }
-            }
-            Console.WriteLine($"-----------------\nRequest To: {session.fullUrl}");
+            capturedSessions.Add(session); 
         }
     }
 }

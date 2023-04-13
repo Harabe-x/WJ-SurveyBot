@@ -25,7 +25,7 @@ namespace WJ_SurveyBot.Survey
 
             if (response.IsSuccessStatusCode)
             {
-                Console.WriteLine($"------------------------\nRequest sent! \nTime:{DateTime.Now.ToString("hh:mm:ss")}");
+                Console.WriteLine($"------------------------\nSurvey sent! \nTime:{DateTime.Now.ToString("hh:mm:ss")}");
             }
             else
             {

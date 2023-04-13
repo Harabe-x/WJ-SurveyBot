@@ -1,6 +1,4 @@
-﻿using WJ_SurverBot.Survey.ScenarioStrategy;
-
-namespace WJ_SurverBot.Survey
+﻿namespace WJ_SurverBot.Survey
 {
     internal interface ISurveySender
     {
