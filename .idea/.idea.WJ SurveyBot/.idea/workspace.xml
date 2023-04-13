@@ -4,7 +4,24 @@
     <projectFile pubXmlPath="WJ SurverBot/Properties/PublishProfiles/FolderProfile.pubxml">WJ SurverBot/WJ SurveyBot.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="79acf4ad-7858-4992-bef2-e1ae57e5eb50" name="Changes" comment="" />
+    <list default="true" id="79acf4ad-7858-4992-bef2-e1ae57e5eb50" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WJ SurveyBot/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WJ SurveyBot/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Application.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Application.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Resources/worldcities.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/CsvReader/CsvReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/CsvReader/ICsvReader.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/Extension/CsvReaderExtension.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/Model/SurveyCityModel.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/Playground/ChromeDrivePlayground.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/Playground/IChromeDrivePlayground.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/FirstSurveyPattern.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/FirstSurveyPattern.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/FourthSurveyPattern.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/FourthSurveyPattern.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/SecondSurveyPattern.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/SecondSurveyPattern.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/ThridSurveyPatern.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Survey/ScenarioStrategy/ThridSurveyPatern.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/Survey/SurveySender.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/Survey/SurveySender.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WJ SurverBot/WJ SurveyBot.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/WJ SurverBot/WJ SurveyBot.csproj" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,15 +35,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "settings.editor.selected.configurable": "configurable.group.appearance",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.appearance&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="WJ SurveyBot: FolderProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish publish_profile="FolderProfile.pubxml" pubxml_path="$PROJECT_DIR$/WJ SurverBot/Properties/PublishProfiles/FolderProfile.pubxml" uuid_high="4069202496133090619" uuid_low="-6539471628085635566" />
@@ -42,6 +59,7 @@
       <option name="presentableId" value="Default" />
       <updated>1680196015085</updated>
       <workItem from="1680196020756" duration="19000" />
+      <workItem from="1680290217125" duration="66000" />
     </task>
     <servers />
   </component>

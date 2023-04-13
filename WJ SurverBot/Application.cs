@@ -1,71 +1,56 @@
-﻿using Figgle;
-using WJ_SurverBot.Json;
-using WJ_SurverBot.Menu;
-using WJ_SurverBot.Survey;
-using WJ_SurverBot.Survey.ScenarioStrategy;
-using WJ_SurverBot.VisualEffects;
+﻿using WJ_SurverBot.Survey;
+using Figgle;
+using WJ_SurverBot.Fiddler_Core;
+using WJ_SurverBot.OperationsMenu;
+using Newtonsoft.Json;
+using WJ_SurveyBot.Survey;
+using System.Collections.Generic;
 
 namespace WJ_SurverBot
 {
     internal class Application : IApplication
     {
-       
-      
-        private readonly IWriteAnimation _writeAnimation;
-    
+
+
+
         private readonly ISurveySender _surveySender;
 
 
-        private readonly IJsonWriter _jsonWriter;
+        private readonly IHttpRequestCapture _requestCapture;
 
-        public Application(ISurveySender surveySender, IWriteAnimation writeAnimation,IJsonWriter jsonWriter)
+        public Application(ISurveySender surveySender, IHttpRequestCapture requestCapture)
         {
-            _jsonWriter = jsonWriter;
-            _writeAnimation = writeAnimation; 
             _surveySender = surveySender;
-    
+            _requestCapture = requestCapture;
         }
-        public void Run()
+        public async void Run()
         {
-            var actionMenu = new ActionMenu();
-            SurveyPattern pattern = new();
-            var menu = new Menu.Menu(new string[] { "Send Surveys", "Add Survey Pattern", "Edit Survey Pattern", "Exit" }, @"
-                                
-                            █     █░▄▄▄██▀▀▀        ██████  █    ██  ██▀███   ██▒   █▓▓█████▓██   ██▓
-                           ▓█░ █ ░█░  ▒██         ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓█   ▀ ▒██  ██▒
-                           ▒█░ █ ░█   ░██         ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒███    ▒██ ██░
-                           ░█░ █ ░█▓██▄██▓          ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░▒▓█  ▄  ░ ▐██▓░ 
-                           ░░██▒██▓ ▓███▒         ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░▒████▒ ░ ██▒▓░
-                           ░ ▓░▒ ▒  ▒▓▒▒░         ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░░ ▒░ ░  ██▒▒▒ 
-                           ▒ ░ ░  ▒ ░▒░         ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ░ ░  ░▓██ ░▒░ 
-                           ░   ░  ░ ░ ░         ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░     ░   ▒ ▒ ░░  
-                           ░    ░   ░               ░     ░        ░           ░     ░  ░░ ░     
-                                                       ░          ░ ░                                                                                                                                                                                                  
-             Select Options using Arrows", _writeAnimation) ;
-            switch (menu.Run())
+            //_requestCapture.Start();
+            //_requestCapture.Stop();
+
+            //if (_requestCapture.InstallCertificate())
+            //{
+
+            //    Console.WriteLine("Enter Pattern Name : ");
+            //    string name = Console.ReadLine();
+            //    Console.WriteLine("Enter Survey URL: ");
+            //    var pattern = new AddSurveyPattern(_requestCapture);
+            //    pattern.Start(Console.ReadLine(),name);
+
+            //}
+
+            var kPiar = Json.JsonReader.ReadJsonFile("C:\\tempJson\\outside.json");
+
+
+            SurveySender ss = new();
+            Thread.Sleep(1009);
+            for (int i = 0; i < 100; i++)
             {
-
-                case 0:
-                    actionMenu.SendSurveys(_surveySender);
-                    Console.Clear();
-                    break;
-                    case 1:
-                    pattern.AddPattern(_jsonWriter);
-                    Console.Clear();
-                    break;
-
-
-                default:
-                    break;
+                _surveySender.SendAnswer(kPiar.Key, kPiar.Value);
+                Thread.Sleep(10);
             }
-
-
-
+            Console.ReadLine();
+            
         }
-
-
-
-        
-      
     }
 }

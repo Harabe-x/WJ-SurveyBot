@@ -1,9 +1,7 @@
-﻿using WJ_SurverBot.Survey.ScenarioStrategy;
-
-namespace WJ_SurverBot.Survey
+﻿namespace WJ_SurverBot.Survey
 {
     internal interface ISurveySender
     {
-        void SendAnswer(string formUrl , string[] FormAnswer, string[] textFieldsAnswer);
+        Task SendAnswer(string requestUrl,Dictionary<string , string> httpRequestBody);
     }
 }
