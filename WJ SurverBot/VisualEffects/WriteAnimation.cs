@@ -18,6 +18,7 @@ namespace WJ_SurverBot.VisualEffects
                 Thread.Sleep(delay.Milliseconds);
             }
             Console.WriteLine();
+
         }
         public void Pause()
         {

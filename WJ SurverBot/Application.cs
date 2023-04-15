@@ -23,6 +23,11 @@ namespace WJ_SurverBot
             _surveySender = surveySender;
             _requestCapture = requestCapture;
         }
+
+
+        /// <summary>
+        /// I'm testing various things here for now, this code will still be changed
+        /// </summary>
         public async void Run()
         {
             //_requestCapture.Start();
@@ -39,11 +44,10 @@ namespace WJ_SurverBot
 
             //}
 
+
+
             var kPiar = Json.JsonReader.ReadJsonFile("C:\\tempJson\\outside.json");
 
-
-            SurveySender ss = new();
-            Thread.Sleep(1009);
             for (int i = 0; i < 100; i++)
             {
                 _surveySender.SendAnswer(kPiar.Key, kPiar.Value);

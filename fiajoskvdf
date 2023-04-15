@@ -1,0 +1,441 @@
+[1mdiff --git a/WJ SurverBot/Application.cs b/WJ SurverBot/Application.cs[m
+[1mindex afc8366..bd5f443 100644[m
+[1m--- a/WJ SurverBot/Application.cs[m	
+[1m+++ b/WJ SurverBot/Application.cs[m	
+[36m@@ -23,6 +23,11 @@[m [mnamespace WJ_SurverBot[m
+             _surveySender = surveySender;[m
+             _requestCapture = requestCapture;[m
+         }[m
+[32m+[m
+[32m+[m
+[32m+[m[32m        /// <summary>[m
+[32m+[m[32m        /// I'm testing various things here for now, this code will still be changed[m
+[32m+[m[32m        /// </summary>[m
+         public async void Run()[m
+         {[m
+             //_requestCapture.Start();[m
+[36m@@ -39,11 +44,10 @@[m [mnamespace WJ_SurverBot[m
+ [m
+             //}[m
+ [m
+[31m-            var kPiar = Json.JsonReader.ReadJsonFile("C:\\tempJson\\outside.json");[m
+ [m
+ [m
+[31m-            SurveySender ss = new();[m
+[31m-            Thread.Sleep(1009);[m
+[32m+[m[32m            var kPiar = Json.JsonReader.ReadJsonFile("C:\\tempJson\\outside.json");[m
+[32m+[m
+             for (int i = 0; i < 100; i++)[m
+             {[m
+                 _surveySender.SendAnswer(kPiar.Key, kPiar.Value);[m
+[1mdiff --git a/WJ SurverBot/Json/JsonWriter.cs b/WJ SurverBot/Json/JsonWriter.cs[m
+[1mdeleted file mode 100644[m
+[1mindex 9a21393..0000000[m
+[1m--- a/WJ SurverBot/Json/JsonWriter.cs[m	
+[1m+++ /dev/null[m
+[36m@@ -1,21 +0,0 @@[m
+[31m-﻿using System.Collections.Generic;[m
+[31m-using Newtonsoft.Json;[m
+[31m-using WJ_SurverBot.Json;[m
+[31m-[m
+[31m-public class JsonWriter : IJsonWriter[m
+[31m-{[m
+[31m-    public void SaveDataToJsonFile(string fileName, object data)[m
+[31m-    {[m
+[31m-        JsonSerializer serializer = new JsonSerializer();[m
+[31m-        serializer.Formatting = Formatting.Indented;[m
+[31m-        File.Create(fileName).Dispose();[m
+[31m-        using (StreamWriter sw = new StreamWriter(fileName, true))[m
+[31m-        using (JsonTextWriter writer = new JsonTextWriter(sw))[m
+[31m-        {[m
+[31m-            serializer.Serialize(writer, data);[m
+[31m-[m
+[31m-        }[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[31m-[m
+[1mdiff --git a/WJ SurverBot/Menu/ActionMenu.cs b/WJ SurverBot/Menu/ActionMenu.cs[m
+[1mdeleted file mode 100644[m
+[1mindex 8d15793..0000000[m
+[1m--- a/WJ SurverBot/Menu/ActionMenu.cs[m	
+[1m+++ /dev/null[m
+[36m@@ -1,63 +0,0 @@[m
+[31m-﻿using Newtonsoft.Json;[m
+[31m-using System;[m
+[31m-using System.Collections.Generic;[m
+[31m-using System.Linq;[m
+[31m-using System.Text;[m
+[31m-using System.Threading.Tasks;[m
+[31m-using WJ_SurverBot.Survey;[m
+[31m-[m
+[31m-namespace WJ_SurverBot.Menu[m
+[31m-{[m
+[31m-    internal class ActionMenu[m
+[31m-    {[m
+[31m-[m
+[31m-        private readonly Menu menu;[m
+[31m-[m
+[31m-        public void SendSurveys(ISurveySender sender)[m
+[31m-        {[m
+[31m-            Console.Clear();[m
+[31m-            var surveysPattern = GetSavedSurveysPatterns("SurveyPatterns");[m
+[31m-[m
+[31m-            [m
+[31m-            List<string > surveys = new List<string>() ;[m
+[31m-            var menu = new Menu(surveysPattern.Select(file => file.Key).ToArray(),"" +[m
+[31m-                @"[m
+[31m-                            █     █░▄▄▄██▀▀▀        ██████  █    ██  ██▀███   ██▒   █▓▓█████▓██   ██▓[m
+[31m-                           ▓█░ █ ░█░  ▒██         ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓█   ▀ ▒██  ██▒[m
+[31m-                           ▒█░ █ ░█   ░██         ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒███    ▒██ ██░[m
+[31m-                           ░█░ █ ░█▓██▄██▓          ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░▒▓█  ▄  ░ ▐██▓░ [m
+[31m-                           ░░██▒██▓ ▓███▒         ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░▒████▒ ░ ██▒▓░[m
+[31m-                           ░ ▓░▒ ▒  ▒▓▒▒░         ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░░ ▒░ ░  ██▒▒▒ [m
+[31m-                           ▒ ░ ░  ▒ ░▒░         ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ░ ░  ░▓██ ░▒░ [m
+[31m-                           ░   ░  ░ ░ ░         ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░     ░   ▒ ▒ ░░  [m
+[31m-                           ░    ░   ░               ░     ░        ░           ░     ░  ░░ ░   [m
+[31m- Select Survey Pattern");[m
+[31m-            var option =  menu.Run();[m
+[31m-            Console.Clear();[m
+[31m-            Console.WriteLine($"You Selected {surveysPattern[option].Key}");[m
+[31m-            var surveypattern = Json.JsonReader.ReadJson(File.ReadAllText(surveysPattern[option].Value));[m
+[31m-[m
+[31m-            //Console.WriteLine("How much form do you wanna send: ");[m
+[31m-            //int.TryParse(Console.ReadLine(), out int parsedValue);[m
+[31m-            for (int i = 0; i < 100; i++)[m
+[31m-            {[m
+[31m-            sender.SendAnswer(surveypattern.FormUrl.ToString(), surveypattern.FormAnswers.ToArray(), surveypattern.FormTextAreaAnswers.ToArray());[m
+[31m-            }          [m
+[31m-        }[m
+[31m-[m
+[31m-        public List<KeyValuePair<string, string>> GetSavedSurveysPatterns(string folderPath)[m
+[31m-        {[m
+[31m-            List<KeyValuePair<string, string>> files = new List<KeyValuePair<string, string>>();[m
+[31m-[m
+[31m-            string[] filePaths = Directory.GetFiles(folderPath);[m
+[31m-[m
+[31m-            foreach (string filePath in filePaths)[m
+[31m-            {[m
+[31m-                files.Add(new KeyValuePair<string, string>(Path.GetFileName(filePath), filePath));[m
+[31m-            }[m
+[31m-[m
+[31m-            return files;[m
+[31m-        }[m
+[31m-    }[m
+[31m-}[m
+[31m-           [m
+\ No newline at end of file[m
+[1mdiff --git a/WJ SurverBot/Menu/AddPattern.cs b/WJ SurverBot/Menu/AddPattern.cs[m
+[1mdeleted file mode 100644[m
+[1mindex c6301cb..0000000[m
+[1m--- a/WJ SurverBot/Menu/AddPattern.cs[m	
+[1m+++ /dev/null[m
+[36m@@ -1,48 +0,0 @@[m
+[31m-﻿using System;[m
+[31m-using System.Collections.Generic;[m
+[31m-using WJ_SurverBot.Json;[m
+[31m-using WJ_SurverBot.Survey.Model;[m
+[31m-[m
+[31m-namespace WJ_SurverBot.Menu[m
+[31m-{[m
+[31m-    internal class SurveyPattern[m
+[31m-    {[m
+[31m-        public string Name { get; private set; } = "";[m
+[31m-        public Uri FormUrl { get; private set; } = new Uri("https://example.com");[m
+[31m-        public List<string> Answers { get; } = new List<string>();[m
+[31m-        public List<string> TextAreaAnswers { get; } = new List<string>();[m
+[31m-[m
+[31m-        public void AddPattern(IJsonWriter jsonWriter)[m
+[31m-        {[m
+[31m-            Console.Clear();[m
+[31m-            Console.WriteLine("Enter Pattern Name:");[m
+[31m-            Name = Console.ReadLine() ?? "";[m
+[31m-[m
+[31m-            Console.WriteLine("Enter Form URL:");[m
+[31m-            Uri.TryCreate(Console.ReadLine(), UriKind.Absolute, out Uri? formUrl);[m
+[31m-            if (formUrl != null) FormUrl = formUrl;[m
+[31m-[m
+[31m-            AddAnswers("Enter Answers:", "Add Word:", Answers);[m
+[31m-            AddAnswers("Enter Text Area Answers", "Add Word:", TextAreaAnswers);[m
+[31m-            jsonWriter.SaveDataToJsonFile($"SurveyPatterns/{Name}.json",new SurveyModel(formUrl,Answers,TextAreaAnswers));[m
+[31m-[m
+[31m-        }[m
+[31m-[m
+[31m-        private static void AddAnswers(string startMessage,string message, List<string> answers)[m
+[31m-        {[m
+[31m-            Console.Clear();[m
+[31m-            while (true)[m
+[31m-            {[m
+[31m-                Console.WriteLine(message);[m
+[31m-                string answer = Console.ReadLine() ?? "";[m
+[31m-[m
+[31m-                answers.Add(answer);[m
+[31m-[m
+[31m-                Console.WriteLine("Do you wanna add more words? Y/N");[m
+[31m-                ConsoleKeyInfo key = Console.ReadKey(true);[m
+[31m-[m
+[31m-                if (key.Key != ConsoleKey.Y) break;[m
+[31m-            }[m
+[31m-        }[m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/WJ SurverBot/Menu/Menu.cs b/WJ SurverBot/Menu/Menu.cs[m
+[1mdeleted file mode 100644[m
+[1mindex b2a358f..0000000[m
+[1m--- a/WJ SurverBot/Menu/Menu.cs[m	
+[1m+++ /dev/null[m
+[36m@@ -1,134 +0,0 @@[m
+[31m-﻿using System;[m
+[31m-using System.Collections.Generic;[m
+[31m-using System.Linq;[m
+[31m-using System.Text;[m
+[31m-using System.Threading.Tasks;[m
+[31m-using WJ_SurverBot.VisualEffects;[m
+[31m-[m
+[31m-namespace WJ_SurverBot.Menu[m
+[31m-{[m
+[31m-    internal class Menu[m
+[31m-    {[m
+[31m-        #region Fields[m
+[31m-        /// <summary>[m
+[31m-        /// Stores selected index by user[m
+[31m-        /// </summary>[m
+[31m-        private int _selectedIndex;[m
+[31m-        /// <summary>[m
+[31m-        /// Stores menu options[m
+[31m-        /// </summary>[m
+[31m-        private readonly string[] _options;[m
+[31m-[m
+[31m-        /// <summary>[m
+[31m-        /// Prompt [m
+[31m-        /// </summary>[m
+[31m-        private readonly string _prompt;[m
+[31m-        /// <summary>[m
+[31m-        /// First launch flag[m
+[31m-        /// </summary>[m
+[31m-        private bool _firstTime = false;[m
+[31m-[m
+[31m-[m
+[31m-        IWriteAnimation _writeAnimation;[m
+[31m-[m
+[31m-        /// <summary>[m
+[31m-        /// ctor[m
+[31m-        /// </summary>[m
+[31m-        /// <param name="options"></param>[m
+[31m-        /// <param name="prompt"></param>[m
+[31m-        #endregion[m
+[31m-        #region Ctor[m
+[31m-        public Menu(string[] options, string prompt, IWriteAnimation writeAnimation = null)[m
+[31m-        {[m
+[31m-            _selectedIndex = 0;[m
+[31m-            _options = options;[m
+[31m-            _prompt = prompt;[m
+[31m-            Console.CursorVisible = false;[m
+[31m-            _writeAnimation = writeAnimation;[m
+[31m-            if (_writeAnimation == null )[m
+[31m-            {[m
+[31m-                _firstTime = false; [m
+[31m-            }[m
+[31m-        }[m
+[31m-        #endregion[m
+[31m-        #region Methods[m
+[31m-        /// <summary>[m
+[31m-        ///Runs the menu and returns the selected index[m
+[31m-        /// </summary>[m
+[31m-        /// <returns></returns>[m
+[31m-        internal int Run()[m
+[31m-        {[m
+[31m-            ConsoleKey keyPressed;[m
+[31m-            do[m
+[31m-            {[m
+[31m-                Console.ResetColor();[m
+[31m-                Console.SetCursorPosition(0, 0);[m
+[31m-                DisplayOptions();[m
+[31m-                var keyInfo = Console.ReadKey(true);[m
+[31m-                keyPressed = keyInfo.Key;[m
+[31m-                if (keyPressed == ConsoleKey.DownArrow)[m
+[31m-                {[m
+[31m-                    _selectedIndex++;[m
+[31m-                    if (_selectedIndex == _options.Length)[m
+[31m-                        _selectedIndex = 0;[m
+[31m-[m
+[31m-[m
+[31m-                }[m
+[31m-                else if (keyPressed == ConsoleKey.UpArrow)[m
+[31m-                {[m
+[31m-                    _selectedIndex--;[m
+[31m-                    if (_selectedIndex == -1)[m
+[31m-                        _selectedIndex = _options.Length - 1;[m
+[31m-[m
+[31m-                }[m
+[31m-            } while (keyPressed != ConsoleKey.Enter);[m
+[31m-[m
+[31m-[m
+[31m-            return _selectedIndex;[m
+[31m-        }[m
+[31m-        /// <summary>[m
+[31m-        /// Writes menu to the screen [m
+[31m-        /// </summary>[m
+[31m-        private void DisplayOptions()[m
+[31m-        {[m
+[31m-            if (_firstTime)[m
+[31m-            {[m
+[31m-                Console.ForegroundColor = ConsoleColor.Red;[m
+[31m-[m
+[31m-                _writeAnimation.Write(_prompt, TimeSpan.FromMilliseconds(1));[m
+[31m-                _firstTime = !_firstTime;[m
+[31m-                Console.ResetColor();[m
+[31m-            }[m
+[31m-            else[m
+[31m-            {[m
+[31m-                Console.ForegroundColor = ConsoleColor.Red;[m
+[31m-                Console.WriteLine(_prompt);[m
+[31m-                Console.ResetColor();[m
+[31m-            }[m
+[31m-            for (int i = 0; i < _options.Length; i++)[m
+[31m-            {[m
+[31m-[m
+[31m-                var currentOption = _options[i];[m
+[31m-                string prefix;[m
+[31m-                if (i == _selectedIndex)[m
+[31m-                {[m
+[31m-[m
+[31m-                    prefix = "*";[m
+[31m-                    Console.ForegroundColor = ConsoleColor.Black;[m
+[31m-                    Console.BackgroundColor = ConsoleColor.White;[m
+[31m-                }[m
+[31m-                else[m
+[31m-                {[m
+[31m-                    prefix = " ";[m
+[31m-                    Console.ForegroundColor = ConsoleColor.White;[m
+[31m-                    Console.BackgroundColor = ConsoleColor.Black;[m
+[31m-[m
+[31m-                }[m
+[31m-[m
+[31m-                Console.WriteLine($"{prefix} << {currentOption} >>");[m
+[31m-            }[m
+[31m-        }[m
+[31m-        #endregion[m
+[31m-    }[m
+[31m-}[m
+[31m-[m
+[1mdiff --git a/WJ SurverBot/Survey/Model/SurveyModel.cs b/WJ SurverBot/Survey/Model/SurveyModel.cs[m
+[1mdeleted file mode 100644[m
+[1mindex 3a34dd3..0000000[m
+[1m--- a/WJ SurverBot/Survey/Model/SurveyModel.cs[m	
+[1m+++ /dev/null[m
+[36m@@ -1,20 +0,0 @@[m
+[31m-﻿namespace WJ_SurverBot.Survey.Model[m
+[31m-{[m
+[31m-    internal class SurveyModel[m
+[31m-    {[m
+[31m-        public Uri? FormUrl { get; private set; }[m
+[31m-[m
+[31m-        public List<string>? FormAnswers { get; private set; }[m
+[31m-[m
+[31m-        public List<string>? FormTextAreaAnswers { get; private set; }[m
+[31m-[m
+[31m-        public SurveyModel(Uri formUrl , List<string> formAnswers , List<string> formTextAreaAnswers)[m
+[31m-        {[m
+[31m-            FormAnswers = formAnswers;[m
+[31m-            FormTextAreaAnswers = formTextAreaAnswers;[m
+[31m-            FormUrl = formUrl;[m
+[31m-        }[m
+[31m-[m
+[31m-[m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/WJ SurverBot/Survey/VisualEffects/AnimatedConsoleTitle.cs b/WJ SurverBot/Survey/VisualEffects/AnimatedConsoleTitle.cs[m
+[1mdeleted file mode 100644[m
+[1mindex b88d462..0000000[m
+[1m--- a/WJ SurverBot/Survey/VisualEffects/AnimatedConsoleTitle.cs[m	
+[1m+++ /dev/null[m
+[36m@@ -1,76 +0,0 @@[m
+[31m-﻿using OpenQA.Selenium.DevTools.V108.Page;[m
+[31m-using System;[m
+[31m-using System.Collections.Generic;[m
+[31m-using System.Linq;[m
+[31m-using System.Text;[m
+[31m-using System.Threading;[m
+[31m-using System.Threading.Tasks;[m
+[31m-[m
+[31m-namespace WJ_SurverBot.Survey.VisualEffects[m
+[31m-{[m
+[31m-    internal  class AnimatedConsoleTitle[m
+[31m-    {[m
+[31m-[m
+[31m-        public bool IsRunning { get; private set; }[m
+[31m-[m
+[31m-        private readonly List<string> _Frames;[m
+[31m-[m
+[31m-        [m
+[31m-        private Thread _thread;[m
+[31m-      [m
+[31m-        [m
+[31m-        public AnimatedConsoleTitle()[m
+[31m-        {[m
+[31m-            _Frames = new();[m
+[31m-        }[m
+[31m-[m
+[31m-[m
+[31m-        public void AddFrames(string[] frames)[m
+[31m-        {[m
+[31m-            foreach (var frame in frames)[m
+[31m-            {[m
+[31m-                _Frames.Add(frame);[m
+[31m-            }[m
+[31m-        }[m
+[31m-[m
+[31m-        public void StartAnimation()[m
+[31m-        {[m
+[31m-            if (IsRunning)[m
+[31m-            {[m
+[31m-                return;[m
+[31m-            }[m
+[31m-            IsRunning = true;[m
+[31m-          _thread = new Thread(BeginAnimation);[m
+[31m-          _thread.Start();[m
+[31m-        }[m
+[31m-[m
+[31m-        public void StopAnimation()[m
+[31m-        {[m
+[31m-            IsRunning = false; [m
+[31m-        }[m
+[31m- [m
+[31m-        private void BeginAnimation()[m
+[31m-        {[m
+[31m-            while (IsRunning)[m
+[31m-            {[m
+[31m-                for (int i = 0; i < _Frames.Count; i++)[m
+[31m-                {[m
+[31m-                    Console.Title = _Frames[i];[m
+[31m-                    Thread.Sleep(1000 / _Frames.Count);[m
+[31m-                }[m
+[31m-[m
+[31m-                // Waiting half second before starting a new animation[m
+[31m-                Thread.Sleep(500);[m
+[31m-            }[m
+[31m-[m
+[31m-        }[m
+[31m-[m
+[31m-        [m
+[31m-[m
+[31m-        public void ClearFrames()[m
+[31m-        {[m
+[31m-            _Frames.Clear();[m
+[31m-        }[m
+[31m-        [m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/WJ SurverBot/VisualEffects/WriteAnimation.cs b/WJ SurverBot/VisualEffects/WriteAnimation.cs[m
+[1mindex 3d0dcca..4eb268f 100644[m
+[1m--- a/WJ SurverBot/VisualEffects/WriteAnimation.cs[m	
+[1m+++ b/WJ SurverBot/VisualEffects/WriteAnimation.cs[m	
+[36m@@ -18,6 +18,7 @@[m [mnamespace WJ_SurverBot.VisualEffects[m
+                 Thread.Sleep(delay.Milliseconds);[m
+             }[m
+             Console.WriteLine();[m
+[32m+[m
+         }[m
+         public void Pause()[m
+         {[m

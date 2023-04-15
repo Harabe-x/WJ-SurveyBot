@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WJ_SurverBot.VisualEffects;
 
-namespace WJ_SurverBot.Menu
+namespace WJ_SurverBot.OperationsMenu
 {
     internal class Menu
     {
@@ -45,9 +45,9 @@ namespace WJ_SurverBot.Menu
             _prompt = prompt;
             Console.CursorVisible = false;
             _writeAnimation = writeAnimation;
-            if (_writeAnimation == null )
+            if (_writeAnimation == null)
             {
-                _firstTime = false; 
+                _firstTime = false;
             }
         }
         #endregion
