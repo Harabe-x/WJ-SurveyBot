@@ -1,7 +1,6 @@
-﻿namespace WJ_SurverBot.Survey
+﻿namespace WJ_SurveyBot.Survey;
+
+internal interface ISurveySender
 {
-    internal interface ISurveySender
-    {
-        Task SendAnswer(string requestUrl,Dictionary<string , string> httpRequestBody);
-    }
+    Task SendAnswer(string requestUrl, Dictionary<string, string> httpRequestBody);
 }

@@ -1,7 +1,6 @@
-﻿namespace WJ_SurverBot
+﻿namespace WJ_SurveyBot;
+
+internal interface IApplication
 {
-    internal interface IApplication
-    {
-        void Run();
-    }
+    void Run();
 }

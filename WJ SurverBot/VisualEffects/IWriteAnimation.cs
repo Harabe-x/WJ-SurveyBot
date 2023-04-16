@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WJ_SurveyBot.VisualEffects;
 
-namespace WJ_SurverBot.VisualEffects
+internal interface IWriteAnimation
 {
-    internal interface IWriteAnimation
-    {
+    void Write(string text, TimeSpan delay);
 
-        void Write(string text, TimeSpan delay);
-
-       void Pause();
-    }
+    void Pause();
 }

@@ -6,34 +6,30 @@ using System.Threading.Tasks;
 using Fiddler;
 using Newtonsoft.Json;
 
-namespace WJ_SurverBot.Fiddler_Core
+namespace WJ_SurveyBot.Fiddler_Core
 {
     internal class HttpRequestCapture : IHttpRequestCapture
     {
 
         public bool IsCaptureEnabled { get;  set; }
 
-
-        public bool SaveRequestsToFile { get;  set; }
-
-
-        private readonly List<Session> capturedSessions;
+        private readonly List<Session> _capturedSessions;
 
         public HttpRequestCapture()
         {
-            capturedSessions = new List<Session>();
+            _capturedSessions = new List<Session>();
         }
 
 
 
         public Session FindRequest(string url)
         {
-            return capturedSessions.FirstOrDefault(x => x.fullUrl == url);
+            return _capturedSessions.FirstOrDefault(x => x.fullUrl == url);
         }
 
         public List<Session> ReturnAllRequests()
         {
-            return capturedSessions.ToList();
+            return _capturedSessions.ToList();
         }
 
 
@@ -53,12 +49,13 @@ namespace WJ_SurverBot.Fiddler_Core
 
         public void Start()
         {
-            Thread thread = new(StartCaptureInSepartedThread);
+            Thread thread = new(StartCaptureInSeparatedThread);
             thread.Start();
         }
 
+    
 
-        private void StartCaptureInSepartedThread()
+        private void StartCaptureInSeparatedThread()
         {
             if (IsCaptureEnabled)
             {
@@ -83,13 +80,18 @@ namespace WJ_SurverBot.Fiddler_Core
 
         public void Stop()
         {
-            IsCaptureEnabled = false;
+            if (!IsCaptureEnabled)
+            {
+                return;
+            }
             FiddlerApplication.Shutdown();
-        }
+            IsCaptureEnabled = false;
+        }   
+   
 
         private void OnRequest(Session session)
         {
-            capturedSessions.Add(session); 
+            _capturedSessions.Add(session); 
         }
     }
 }

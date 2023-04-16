@@ -1,29 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WJ_SurveyBot.VisualEffects;
 
-namespace WJ_SurverBot.VisualEffects
+internal class WriteAnimation : IWriteAnimation
 {
-    internal class WriteAnimation : IWriteAnimation
+    public void Write(string text, TimeSpan delay)
     {
-        public void Write(string text, TimeSpan delay)
+        for (var i = 0; i < text.Length; i++)
         {
-            for (int i = 0; i < text.Length; i++)
-            {
-                Console.Write(text[i]);
-                if (text[i] == ' ')
-                    continue;
-                Thread.Sleep(delay.Milliseconds);
-            }
-            Console.WriteLine();
+            Console.Write(text[i]);
+            if (text[i] == ' ')
+                continue;
+            Thread.Sleep(delay.Milliseconds);
+        }
 
-        }
-        public void Pause()
-        {
-            Console.WriteLine("Press any key to continue ...");
-            Console.ReadKey(true);
-        }
+        Console.WriteLine();
+    }
+
+    public void Pause()
+    {
+        Console.WriteLine("Press any key to continue ...");
+        Console.ReadKey(true);
     }
 }
