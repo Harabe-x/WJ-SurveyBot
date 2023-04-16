@@ -6,14 +6,24 @@ namespace WJ_SurveyBot.OperationsMenu;
 
 internal class SurveySenderMenu : ISurveySenderMenu
 {
-    public async void RunMenu(ISurveySender _surveySender)
+    public  void RunMenu(ISurveySender _surveySender)
     {
         Console.Clear();
         var menuOptions = GetSavedSurveysPatterns(@"SurveyPatterns");
 
 
         var surveys = new List<string>();
-        var menu = new Menu(menuOptions.Select(file => file.Key).ToArray(), @"Select Survey Pattern");
+        var menu = new Menu(menuOptions.Select(file => file.Key).ToArray(), @" 
+█     █░▄▄▄██▀▀▀     ██████  █    ██  ██▀███   ██▒   █▓▓█████▓██   ██▓
+▓█░ █ ░█░  ▒██      ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓█   ▀ ▒██  ██▒
+▒█░ █ ░█   ░██      ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒███    ▒██ ██░
+░█░ █ ░█▓██▄██▓       ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░▒▓█  ▄  ░ ▐██▓░
+░░██▒██▓ ▓███▒      ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░▒████▒ ░ ██▒▓░
+░ ▓░▒ ▒  ▒▓▒▒░      ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░░ ▒░ ░  ██▒▒▒ 
+  ▒ ░ ░  ▒ ░▒░      ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ░ ░  ░▓██ ░▒░ 
+  ░   ░  ░ ░ ░      ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░     ░   ▒ ▒ ░░  
+    ░    ░   ░            ░     ░        ░           ░     ░  ░░ ░     
+Select Survey Pattern");
         var selectedOption = menu.Run();
         Console.Clear();
         Console.WriteLine($"You Selected {menuOptions[selectedOption].Key}");
@@ -21,7 +31,7 @@ internal class SurveySenderMenu : ISurveySenderMenu
 
         Console.WriteLine("How much form do you wanna send: ");
         int.TryParse(Console.ReadLine(), out var parsedValue);
-        for (var i = 0; i < parsedValue; i++)  await _surveySender.SendAnswer(surveyPattern.Key, surveyPattern.Value);
+        for (var i = 0; i < parsedValue; i++)   _surveySender.SendAnswer(surveyPattern.Key, surveyPattern.Value);
     }
 
 

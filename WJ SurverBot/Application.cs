@@ -32,11 +32,21 @@ internal class Application : IApplication
 
 
     /// <summary>
-    ///     I'm testing various things here for now, this code will still be changed
+    ///I'm testing various things here for now, this code will still be changed
     /// </summary>
     public async void Run()
     {
-        var menu = new Menu(new string[] { "Send Survey", "Add Survey Pattern ", "Delete Pattern", "Edit Pattern", "Exit" }, "Select Option");
+        var menu = new Menu(new string[] { "Send Survey", "Add Survey Pattern ", "Delete Pattern", "Edit Pattern", "Exit" }, @" 
+█     █░▄▄▄██▀▀▀     ██████  █    ██  ██▀███   ██▒   █▓▓█████▓██   ██▓
+▓█░ █ ░█░  ▒██      ▒██    ▒  ██  ▓██▒▓██ ▒ ██▒▓██░   █▒▓█   ▀ ▒██  ██▒
+▒█░ █ ░█   ░██      ░ ▓██▄   ▓██  ▒██░▓██ ░▄█ ▒ ▓██  █▒░▒███    ▒██ ██░
+░█░ █ ░█▓██▄██▓       ▒   ██▒▓▓█  ░██░▒██▀▀█▄    ▒██ █░░▒▓█  ▄  ░ ▐██▓░
+░░██▒██▓ ▓███▒      ▒██████▒▒▒▒█████▓ ░██▓ ▒██▒   ▒▀█░  ░▒████▒ ░ ██▒▓░
+░ ▓░▒ ▒  ▒▓▒▒░      ▒ ▒▓▒ ▒ ░░▒▓▒ ▒ ▒ ░ ▒▓ ░▒▓░   ░ ▐░  ░░ ▒░ ░  ██▒▒▒ 
+  ▒ ░ ░  ▒ ░▒░      ░ ░▒  ░ ░░░▒░ ░ ░   ░▒ ░ ▒░   ░ ░░   ░ ░  ░▓██ ░▒░ 
+  ░   ░  ░ ░ ░      ░  ░  ░   ░░░ ░ ░   ░░   ░      ░░     ░   ▒ ▒ ░░  
+    ░    ░   ░            ░     ░        ░           ░     ░  ░░ ░     
+Select Option");
         switch (menu.Run())
         {
             case 0:
@@ -47,7 +57,7 @@ internal class Application : IApplication
                 _requestCapture.InstallCertificate();
                 Console.WriteLine("Enter Name: ");
                 var name = Console.ReadLine();
-                Console.WriteLine("Enter Form Url: ");
+                Console.WriteLine("Enter Form Url: "); 
                 _addSurveyPattern.Start(Console.ReadLine(), name);
                 break;
             case 2:
@@ -62,6 +72,7 @@ internal class Application : IApplication
 
 
         }
-        Console.ReadLine();
+        Console.Clear();
+        Run();
     }
 }

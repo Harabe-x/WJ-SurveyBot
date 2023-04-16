@@ -4,10 +4,10 @@ internal class WriteAnimation : IWriteAnimation
 {
     public void Write(string text, TimeSpan delay)
     {
-        for (var i = 0; i < text.Length; i++)
+        foreach (var t in text)
         {
-            Console.Write(text[i]);
-            if (text[i] == ' ')
+            Console.Write(t);
+            if (t == ' ')
                 continue;
             Thread.Sleep(delay.Milliseconds);
         }
