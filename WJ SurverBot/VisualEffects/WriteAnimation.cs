@@ -1,13 +1,24 @@
-﻿namespace WJ_SurveyBot.VisualEffects;
+﻿using WJ_SurveyBot.VisualEffects;
 
+namespace WJ_SurverBot.VisualEffects;
+
+/// <summary>
+/// Provides methods for animating the display of text in the console.
+/// </summary>
 internal class WriteAnimation : IWriteAnimation
 {
+    /// <summary>
+    /// Writes each character in a given string with a delay between each character.
+    /// </summary>
+    /// <param name="text">The text to write.</param>
+    /// <param name="delay">The delay between each character, in milliseconds.</param>
     public void Write(string text, TimeSpan delay)
     {
-        foreach (var t in text)
+        foreach (var letter in text)
         {
-            Console.Write(t);
-            if (t == ' ')
+            Console.Write(letter);
+            if (letter == ' ')
+
                 continue;
             Thread.Sleep(delay.Milliseconds);
         }
@@ -15,6 +26,9 @@ internal class WriteAnimation : IWriteAnimation
         Console.WriteLine();
     }
 
+    /// <summary>
+    /// Pauses execution and waits for user input before continuing.
+    /// </summary>
     public void Pause()
     {
         Console.WriteLine("Press any key to continue ...");

@@ -36,7 +36,7 @@ namespace WJ_SurveyBot.OperationsMenu
 
         #region Ctor
 
-        public Menu(string[] options, string prompt, IWriteAnimation writeAnimation = null)
+        public Menu(string[] options, string prompt, IWriteAnimation? writeAnimation = null)
         {
             _selectedIndex = 0;
             _options = options;
@@ -64,17 +64,22 @@ namespace WJ_SurveyBot.OperationsMenu
                 DisplayOptions();
                 var keyInfo = Console.ReadKey(true);
                 keyPressed = keyInfo.Key;
-                if (keyPressed == ConsoleKey.DownArrow)
+                switch (keyPressed)
                 {
-                    _selectedIndex++;
-                    if (_selectedIndex == _options.Length)
-                        _selectedIndex = 0;
-                }
-                else if (keyPressed == ConsoleKey.UpArrow)
-                {
-                    _selectedIndex--;
-                    if (_selectedIndex == -1)
-                        _selectedIndex = _options.Length - 1;
+                    case ConsoleKey.DownArrow:
+                    {
+                        _selectedIndex++;
+                        if (_selectedIndex == _options.Length)
+                            _selectedIndex = 0;
+                        break;
+                    }
+                    case ConsoleKey.UpArrow:
+                    {
+                        _selectedIndex--;
+                        if (_selectedIndex == -1)
+                            _selectedIndex = _options.Length - 1;
+                        break;
+                    }
                 }
             } while (keyPressed != ConsoleKey.Enter);
 

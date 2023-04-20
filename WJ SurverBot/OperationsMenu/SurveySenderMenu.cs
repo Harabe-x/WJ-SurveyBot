@@ -4,9 +4,18 @@ using WJ_SurveyBot.Survey;
 
 namespace WJ_SurveyBot.OperationsMenu;
 
+
+/// <summary>
+/// Represents a menu for sending surveys.
+/// </summary>
 internal class SurveySenderMenu : ISurveySenderMenu
 {
-    public  void RunMenu(ISurveySender _surveySender)
+
+    /// <summary>
+    /// Displays a menu of saved survey patterns and sends answers for the selected pattern.
+    /// </summary>
+    /// <param name="_surveySender">The survey sender to use for sending answers.</param>
+    public async void RunMenu(ISurveySender _surveySender)
     {
         Console.Clear();
         var menuOptions = GetSavedSurveysPatterns(@"SurveyPatterns");
@@ -31,19 +40,14 @@ Select Survey Pattern");
 
         Console.WriteLine("How much form do you wanna send: ");
         int.TryParse(Console.ReadLine(), out var parsedValue);
-        for (var i = 0; i < parsedValue; i++)   _surveySender.SendAnswer(surveyPattern.Key, surveyPattern.Value);
+        for (var i = 0; i < parsedValue; i++) await _surveySender.SendAnswer(surveyPattern.Key, surveyPattern.Value);
     }
 
 
     public List<KeyValuePair<string, string>> GetSavedSurveysPatterns(string folderPath)
     {
-        var files = new List<KeyValuePair<string, string>>();
-
         var filePaths = Directory.GetFiles(folderPath);
 
-        foreach (var filePath in filePaths)
-            files.Add(new KeyValuePair<string, string>(Path.GetFileName(filePath), filePath));
-
-        return files;
+        return filePaths.Select(filePath => new KeyValuePair<string, string>(Path.GetFileName(filePath), filePath)).ToList();
     }
 }

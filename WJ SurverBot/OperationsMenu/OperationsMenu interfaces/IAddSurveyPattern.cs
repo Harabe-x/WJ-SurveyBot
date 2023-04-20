@@ -2,5 +2,5 @@
 
 internal interface IAddSurveyPattern
 {
-    public void Start(string formUrl, string name);
+    public void Start(string? formUrl, string name);
 }

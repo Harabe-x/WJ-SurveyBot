@@ -5,7 +5,7 @@ internal class AnimatedConsoleTitle
     private readonly List<string> _Frames;
 
 
-    private Thread _thread;
+    private Thread? _thread;
 
 
     public AnimatedConsoleTitle()
@@ -38,9 +38,9 @@ internal class AnimatedConsoleTitle
     {
         while (IsRunning)
         {
-            for (var i = 0; i < _Frames.Count; i++)
+            foreach (var frame in _Frames)
             {
-                Console.Title = _Frames[i];
+                Console.Title = frame;
                 Thread.Sleep(1000 / _Frames.Count);
             }
 

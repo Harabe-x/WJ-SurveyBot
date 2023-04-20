@@ -10,6 +10,9 @@ namespace WJ_SurverBot.OperationsMenu
 {
     internal class DeleteSurveyPatternMenu : IDeleteSurveyPatternMenu
     {
+        /// <summary>
+        /// Runs the menu for deleting a survey pattern.
+        /// </summary>
         public void RunMenu()
         {
             
@@ -37,18 +40,17 @@ Select pattern to delete");
             }
             
         }
-
+  /// <summary>
+        /// Gets a list of saved survey pattern file paths and their names.
+        /// </summary>
+        /// <param name="folderPath">The folder path where the survey patterns are saved.</param>
+        /// <returns>A list of KeyValuePair objects where the key is the pattern name and the value</returns>
         public List<KeyValuePair<string, string>> GetSavedSurveysPatterns(string folderPath)
         {
-            var files = new List<KeyValuePair<string, string>>();
-
             var filePaths = Directory.GetFiles(folderPath);
 
-            foreach (var filePath in filePaths)
-                files.Add(new KeyValuePair<string, string>(Path.GetFileName(filePath), filePath));
-
-            return files;
-        }
+            return filePaths.Select(filePath => new KeyValuePair<string, string>(Path.GetFileName(filePath), filePath)).ToList();
+        }      
 
     }
 }
