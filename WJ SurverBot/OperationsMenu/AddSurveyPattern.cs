@@ -52,7 +52,7 @@ namespace WJ_SurveyBot.OperationsMenu
         /// <param name="formUrl">The URL of the survey form to capture.</param>
         /// <remarks>This method launches a Chrome browser instance, navigates to the specified form URL, and maximizes the window. It then starts capturing HTTP requests and waits for the survey form to load. Once the form is fully loaded, it stops capturing HTTP requests and disposes of the Chrome browser instance.</remarks>
 
-        private void CaptureHttpResponse(string? formUrl)
+        private void CaptureHttpResponse(string formUrl)
         {
             _chromeDriver = new ChromeDriver();
             _chromeDriver.Navigate().GoToUrl(formUrl);
