@@ -60,9 +60,7 @@ Select Option");
                     _surveySenderMenu.RunMenu(_surveySender);
                     break;
                 case 1:
-                    _surveySenderMenu.RunMenu(_surveySender);
                     _requestCapture.InstallCertificate();
-
                     Console.WriteLine("Enter Name: ");
                     var name = Console.ReadLine();
                     Console.WriteLine("Enter Form Url: ");
